@@ -1,0 +1,32 @@
+{
+  "name": "quantified-self",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "cd dist && node index.js",
+    "codegen": "graphql-codegen"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^1.9.1",
+    "@graphql-codegen/typescript": "^1.9.1",
+    "@graphql-codegen/typescript-operations": "^1.9.1",
+    "@graphql-codegen/typescript-resolvers": "^1.9.1"
+  },
+  "dependencies": {
+    "@types/dotenv": "^8.2.0",
+    "@types/node-fetch": "^2.5.5",
+    "apollo": "^2.26.0",
+    "apollo-server": "^2.11.0",
+    "dotenv": "^8.2.0",
+    "graphql": "^14.6.0",
+    "graphql-codegen": "^0.4.0",
+    "graphql-import": "^1.0.1",
+    "node-fetch": "^2.6.0"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
