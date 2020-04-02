@@ -52,7 +52,7 @@ export class StravaDataSource {
   public getActivities(
     limit: number
   ): Promise<Array<StravaRunningActivity> | null> {
-    logErr('Fetching activities')
+    logInfo('Fetching activities')
     const url = buildActivitiesUrl(this.endpoint, limit)
 
     return this.inProgressAuthentication.then(() => {

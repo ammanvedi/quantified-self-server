@@ -15,7 +15,7 @@ const envars: ProcessEnvars = {
   STRAVA_CLIENT_ID: process.env.STRAVA_CLIENT_ID,
   STRAVA_CLIENT_SECRET: process.env.STRAVA_CLIENT_SECRET,
   STRAVA_REFRESH_TOKEN: process.env.STRAVA_REFRESH_TOKEN,
-  PORT: process.env.PORT,
+  PORT: parseInt(process.env.PORT),
 }
 
 const typeDefs = importSchema('graphql/schema.graphql')
@@ -26,17 +26,19 @@ const resolvers: Resolvers<ApolloContext> = {
   },
 }
 
+const stravaDataSource = new StravaDataSource(
+  envars.STRAVA_API_ENDPOINT,
+  envars.STRAVA_REFRESH_TOKEN,
+  envars.STRAVA_CLIENT_ID,
+  envars.STRAVA_CLIENT_SECRET
+)
+
 const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: (): ApolloContext => ({
     dataSource: {
-      strava: new StravaDataSource(
-        envars.STRAVA_API_ENDPOINT,
-        envars.STRAVA_REFRESH_TOKEN,
-        envars.STRAVA_CLIENT_ID,
-        envars.STRAVA_CLIENT_SECRET
-      ),
+      strava: stravaDataSource,
     },
   }),
 })

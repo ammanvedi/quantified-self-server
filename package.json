@@ -6,8 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && npm run post-build",
-    "post-build": "cp src/graphql/schema.graphql dist/graphql",
+    "post-build": "cp src/graphql/schema.graphql dist/graphql && cp .env dist",
     "start": "cd dist && node index.js",
+    "build-start": "npm run build && npm run start",
     "codegen": "graphql-codegen"
   },
   "devDependencies": {
