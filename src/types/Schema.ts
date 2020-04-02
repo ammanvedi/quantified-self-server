@@ -16,6 +16,13 @@ export type Coordinate = {
   lng: Scalars['Float'];
 };
 
+export type ElevationDescription = {
+   __typename?: 'ElevationDescription';
+  elevationGain: Scalars['Int'];
+  minElevation: Scalars['Int'];
+  maxElevation: Scalars['Int'];
+};
+
 export type HeartrateDescription = {
    __typename?: 'HeartrateDescription';
   averageHeartrate: Scalars['Float'];
@@ -54,9 +61,9 @@ export type StravaRunningActivity = {
   distance: Scalars['Int'];
   movingTime: Scalars['Int'];
   elapsedTime: Scalars['Int'];
-  elevationGain: Scalars['Int'];
   startDateTime: Scalars['String'];
-  endDateTime: Scalars['String'];
+  heart?: Maybe<HeartrateDescription>;
+  elevation: ElevationDescription;
   location: LocationDescription;
   speed: SpeedDescription;
 };
@@ -130,12 +137,13 @@ export type ResolversTypes = {
   Int: ResolverTypeWrapper<Scalars['Int']>,
   StravaRunningActivity: ResolverTypeWrapper<StravaRunningActivity>,
   String: ResolverTypeWrapper<Scalars['String']>,
+  HeartrateDescription: ResolverTypeWrapper<HeartrateDescription>,
+  Float: ResolverTypeWrapper<Scalars['Float']>,
+  ElevationDescription: ResolverTypeWrapper<ElevationDescription>,
   LocationDescription: ResolverTypeWrapper<LocationDescription>,
   Coordinate: ResolverTypeWrapper<Coordinate>,
-  Float: ResolverTypeWrapper<Scalars['Float']>,
   SpeedDescription: ResolverTypeWrapper<SpeedDescription>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
-  HeartrateDescription: ResolverTypeWrapper<HeartrateDescription>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -144,17 +152,25 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'],
   StravaRunningActivity: StravaRunningActivity,
   String: Scalars['String'],
+  HeartrateDescription: HeartrateDescription,
+  Float: Scalars['Float'],
+  ElevationDescription: ElevationDescription,
   LocationDescription: LocationDescription,
   Coordinate: Coordinate,
-  Float: Scalars['Float'],
   SpeedDescription: SpeedDescription,
   Boolean: Scalars['Boolean'],
-  HeartrateDescription: HeartrateDescription,
 };
 
 export type CoordinateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinate'] = ResolversParentTypes['Coordinate']> = {
   lat?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   lng?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type ElevationDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['ElevationDescription'] = ResolversParentTypes['ElevationDescription']> = {
+  elevationGain?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  minElevation?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  maxElevation?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -189,9 +205,9 @@ export type StravaRunningActivityResolvers<ContextType = any, ParentType extends
   distance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   movingTime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   elapsedTime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  elevationGain?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   startDateTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  endDateTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  heart?: Resolver<Maybe<ResolversTypes['HeartrateDescription']>, ParentType, ContextType>,
+  elevation?: Resolver<ResolversTypes['ElevationDescription'], ParentType, ContextType>,
   location?: Resolver<ResolversTypes['LocationDescription'], ParentType, ContextType>,
   speed?: Resolver<ResolversTypes['SpeedDescription'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
@@ -199,6 +215,7 @@ export type StravaRunningActivityResolvers<ContextType = any, ParentType extends
 
 export type Resolvers<ContextType = any> = {
   Coordinate?: CoordinateResolvers<ContextType>,
+  ElevationDescription?: ElevationDescriptionResolvers<ContextType>,
   HeartrateDescription?: HeartrateDescriptionResolvers<ContextType>,
   LocationDescription?: LocationDescriptionResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,

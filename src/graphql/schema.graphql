@@ -1,40 +1,45 @@
 type Coordinate {
-    lat: Float!
-    lng: Float!
+  lat: Float!
+  lng: Float!
 }
 
 type SpeedDescription {
-    averageSpeed: Float!
-    maxSpeed: Float!
+  averageSpeed: Float!
+  maxSpeed: Float!
 }
 
 type LocationDescription {
-    startPosition: Coordinate!
-    endPosition: Coordinate!
-    city: String
-    state: String
-    country: String
-    mapPolyline: String
+  startPosition: Coordinate!
+  endPosition: Coordinate!
+  city: String
+  state: String
+  country: String
+  mapPolyline: String
 }
 
 type HeartrateDescription {
-    averageHeartrate: Float!
-    maxHeartrate: Float!
+  averageHeartrate: Float!
+  maxHeartrate: Float!
+}
+
+type ElevationDescription {
+  elevationGain: Int!
+  minElevation: Int!
+  maxElevation: Int!
 }
 
 type StravaRunningActivity {
-    name: String!
-    distance: Int!
-    movingTime: Int!
-    elapsedTime: Int!
-    elevationGain: Int!
-    startDateTime: String!
-    endDateTime: String!
-    location: LocationDescription!
-    speed: SpeedDescription!
+  name: String!
+  distance: Int!
+  movingTime: Int!
+  elapsedTime: Int!
+  startDateTime: String!
+  heart: HeartrateDescription
+  elevation: ElevationDescription!
+  location: LocationDescription!
+  speed: SpeedDescription!
 }
 
 type Query {
-    runs(limit: Int!): [StravaRunningActivity!] @cacheControl(maxAge: 600)
+  runs(limit: Int!): [StravaRunningActivity!] @cacheControl(maxAge: 600)
 }
-
