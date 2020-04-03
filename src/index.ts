@@ -2,6 +2,7 @@ import { importSchema } from 'graphql-import'
 import { config } from 'dotenv'
 import { ProcessEnvars } from './types/Environment'
 import { ApolloServer } from 'apollo-server'
+import responseCachePlugin from 'apollo-server-plugin-response-cache';
 import { Resolvers } from './types/Schema'
 import { ApolloContext } from './types/Apollo'
 import { runsResolver } from './graphql/resolvers/runs'
@@ -36,6 +37,10 @@ const stravaDataSource = new StravaDataSource(
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  plugins: [responseCachePlugin()],
+  cacheControl: {
+    defaultMaxAge: 60 * 30
+  },
   context: (): ApolloContext => ({
     dataSource: {
       strava: stravaDataSource,
@@ -44,5 +49,5 @@ const server = new ApolloServer({
 })
 
 server.listen(envars.PORT).then(({ url }) => {
-  logSucc(`Quantified Self Server. Live at ${url}`)
+  logSucc(`Quantified Self Live at ${url}`)
 })

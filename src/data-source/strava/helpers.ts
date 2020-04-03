@@ -1,5 +1,5 @@
 import { StravaAPIActivity } from '../../types/Strava'
-import { StravaRunningActivity } from '../../types/Schema'
+import { RunningActivity } from '../../types/Schema'
 
 export const buildRefreshTokenUrl = (
   clientId: string,
@@ -12,7 +12,7 @@ export const buildActivitiesUrl = (base: string, limit: number) => `${base}/athl
 
 export const stravaAPIToGQLType = (
   apiType: StravaAPIActivity
-): StravaRunningActivity => ({
+): RunningActivity => ({
   name: apiType.name,
   distance: apiType.distance,
   movingTime: apiType.moving_time,

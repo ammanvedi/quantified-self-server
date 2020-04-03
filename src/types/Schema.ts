@@ -10,6 +10,10 @@ export type Scalars = {
   Float: number;
 };
 
+export enum ArtistType {
+  Main = 'MAIN'
+}
+
 export type Coordinate = {
    __typename?: 'Coordinate';
   lat: Scalars['Float'];
@@ -18,9 +22,9 @@ export type Coordinate = {
 
 export type ElevationDescription = {
    __typename?: 'ElevationDescription';
-  elevationGain: Scalars['Int'];
-  minElevation: Scalars['Int'];
-  maxElevation: Scalars['Int'];
+  elevationGain: Scalars['Float'];
+  minElevation: Scalars['Float'];
+  maxElevation: Scalars['Float'];
 };
 
 export type HeartrateDescription = {
@@ -39,9 +43,33 @@ export type LocationDescription = {
   mapPolyline?: Maybe<Scalars['String']>;
 };
 
+export type MusicAlbum = {
+   __typename?: 'MusicAlbum';
+  title: Scalars['String'];
+  coverUrl: Scalars['String'];
+};
+
+export type MusicArtist = {
+   __typename?: 'MusicArtist';
+  name: Scalars['String'];
+  type?: Maybe<ArtistType>;
+};
+
+export type MusicTrack = {
+   __typename?: 'MusicTrack';
+  title: Scalars['String'];
+  duration?: Maybe<Scalars['Int']>;
+  url: Scalars['String'];
+  explicit: Scalars['Boolean'];
+  artist?: Maybe<MusicArtist>;
+  artists?: Maybe<Array<MusicArtist>>;
+  album: MusicAlbum;
+};
+
 export type Query = {
    __typename?: 'Query';
-  runs?: Maybe<Array<StravaRunningActivity>>;
+  runs?: Maybe<Array<RunningActivity>>;
+  musicTracks?: Maybe<Array<MusicTrack>>;
 };
 
 
@@ -49,16 +77,15 @@ export type QueryRunsArgs = {
   limit: Scalars['Int'];
 };
 
-export type SpeedDescription = {
-   __typename?: 'SpeedDescription';
-  averageSpeed: Scalars['Float'];
-  maxSpeed: Scalars['Float'];
+
+export type QueryMusicTracksArgs = {
+  limit: Scalars['Int'];
 };
 
-export type StravaRunningActivity = {
-   __typename?: 'StravaRunningActivity';
+export type RunningActivity = {
+   __typename?: 'RunningActivity';
   name: Scalars['String'];
-  distance: Scalars['Int'];
+  distance: Scalars['Float'];
   movingTime: Scalars['Int'];
   elapsedTime: Scalars['Int'];
   startDateTime: Scalars['String'];
@@ -66,6 +93,12 @@ export type StravaRunningActivity = {
   elevation: ElevationDescription;
   location: LocationDescription;
   speed: SpeedDescription;
+};
+
+export type SpeedDescription = {
+   __typename?: 'SpeedDescription';
+  averageSpeed: Scalars['Float'];
+  maxSpeed: Scalars['Float'];
 };
 
 
@@ -135,30 +168,38 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = {
   Query: ResolverTypeWrapper<{}>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
-  StravaRunningActivity: ResolverTypeWrapper<StravaRunningActivity>,
+  RunningActivity: ResolverTypeWrapper<RunningActivity>,
   String: ResolverTypeWrapper<Scalars['String']>,
-  HeartrateDescription: ResolverTypeWrapper<HeartrateDescription>,
   Float: ResolverTypeWrapper<Scalars['Float']>,
+  HeartrateDescription: ResolverTypeWrapper<HeartrateDescription>,
   ElevationDescription: ResolverTypeWrapper<ElevationDescription>,
   LocationDescription: ResolverTypeWrapper<LocationDescription>,
   Coordinate: ResolverTypeWrapper<Coordinate>,
   SpeedDescription: ResolverTypeWrapper<SpeedDescription>,
+  MusicTrack: ResolverTypeWrapper<MusicTrack>,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
+  MusicArtist: ResolverTypeWrapper<MusicArtist>,
+  ArtistType: ArtistType,
+  MusicAlbum: ResolverTypeWrapper<MusicAlbum>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Query: {},
   Int: Scalars['Int'],
-  StravaRunningActivity: StravaRunningActivity,
+  RunningActivity: RunningActivity,
   String: Scalars['String'],
-  HeartrateDescription: HeartrateDescription,
   Float: Scalars['Float'],
+  HeartrateDescription: HeartrateDescription,
   ElevationDescription: ElevationDescription,
   LocationDescription: LocationDescription,
   Coordinate: Coordinate,
   SpeedDescription: SpeedDescription,
+  MusicTrack: MusicTrack,
   Boolean: Scalars['Boolean'],
+  MusicArtist: MusicArtist,
+  ArtistType: ArtistType,
+  MusicAlbum: MusicAlbum,
 };
 
 export type CoordinateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinate'] = ResolversParentTypes['Coordinate']> = {
@@ -168,9 +209,9 @@ export type CoordinateResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type ElevationDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['ElevationDescription'] = ResolversParentTypes['ElevationDescription']> = {
-  elevationGain?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  minElevation?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
-  maxElevation?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  elevationGain?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  minElevation?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  maxElevation?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -190,19 +231,37 @@ export type LocationDescriptionResolvers<ContextType = any, ParentType extends R
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  runs?: Resolver<Maybe<Array<ResolversTypes['StravaRunningActivity']>>, ParentType, ContextType, RequireFields<QueryRunsArgs, 'limit'>>,
-};
-
-export type SpeedDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpeedDescription'] = ResolversParentTypes['SpeedDescription']> = {
-  averageSpeed?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
-  maxSpeed?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+export type MusicAlbumResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicAlbum'] = ResolversParentTypes['MusicAlbum']> = {
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  coverUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type StravaRunningActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['StravaRunningActivity'] = ResolversParentTypes['StravaRunningActivity']> = {
+export type MusicArtistResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicArtist'] = ResolversParentTypes['MusicArtist']> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  distance?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
+  type?: Resolver<Maybe<ResolversTypes['ArtistType']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type MusicTrackResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicTrack'] = ResolversParentTypes['MusicTrack']> = {
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  duration?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>,
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  explicit?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>,
+  artist?: Resolver<Maybe<ResolversTypes['MusicArtist']>, ParentType, ContextType>,
+  artists?: Resolver<Maybe<Array<ResolversTypes['MusicArtist']>>, ParentType, ContextType>,
+  album?: Resolver<ResolversTypes['MusicAlbum'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  runs?: Resolver<Maybe<Array<ResolversTypes['RunningActivity']>>, ParentType, ContextType, RequireFields<QueryRunsArgs, 'limit'>>,
+  musicTracks?: Resolver<Maybe<Array<ResolversTypes['MusicTrack']>>, ParentType, ContextType, RequireFields<QueryMusicTracksArgs, 'limit'>>,
+};
+
+export type RunningActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['RunningActivity'] = ResolversParentTypes['RunningActivity']> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  distance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
   movingTime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   elapsedTime?: Resolver<ResolversTypes['Int'], ParentType, ContextType>,
   startDateTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
@@ -213,14 +272,23 @@ export type StravaRunningActivityResolvers<ContextType = any, ParentType extends
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
+export type SpeedDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['SpeedDescription'] = ResolversParentTypes['SpeedDescription']> = {
+  averageSpeed?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  maxSpeed?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
 export type Resolvers<ContextType = any> = {
   Coordinate?: CoordinateResolvers<ContextType>,
   ElevationDescription?: ElevationDescriptionResolvers<ContextType>,
   HeartrateDescription?: HeartrateDescriptionResolvers<ContextType>,
   LocationDescription?: LocationDescriptionResolvers<ContextType>,
+  MusicAlbum?: MusicAlbumResolvers<ContextType>,
+  MusicArtist?: MusicArtistResolvers<ContextType>,
+  MusicTrack?: MusicTrackResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
+  RunningActivity?: RunningActivityResolvers<ContextType>,
   SpeedDescription?: SpeedDescriptionResolvers<ContextType>,
-  StravaRunningActivity?: StravaRunningActivityResolvers<ContextType>,
 };
 
 

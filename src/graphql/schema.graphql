@@ -23,14 +23,14 @@ type HeartrateDescription {
 }
 
 type ElevationDescription {
-  elevationGain: Int!
-  minElevation: Int!
-  maxElevation: Int!
+  elevationGain: Float!
+  minElevation: Float!
+  maxElevation: Float!
 }
 
-type StravaRunningActivity {
+type RunningActivity {
   name: String!
-  distance: Int!
+  distance: Float!
   movingTime: Int!
   elapsedTime: Int!
   startDateTime: String!
@@ -40,6 +40,31 @@ type StravaRunningActivity {
   speed: SpeedDescription!
 }
 
+enum ArtistType {
+  MAIN
+}
+
+type MusicArtist {
+  name: String!
+  type: ArtistType
+}
+
+type MusicAlbum {
+  title: String!
+  coverUrl: String!
+}
+
+type MusicTrack {
+  title: String!
+  duration: Int
+  url: String!
+  explicit: Boolean!
+  artist: MusicArtist
+  artists: [MusicArtist!]
+  album: MusicAlbum!
+}
+
 type Query {
-  runs(limit: Int!): [StravaRunningActivity!] @cacheControl(maxAge: 600)
+  runs(limit: Int!): [RunningActivity!]
+  musicTracks(limit: Int!): [MusicTrack!]
 }

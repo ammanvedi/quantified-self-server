@@ -5,7 +5,7 @@ import {
   stravaAPIToGQLType,
 } from './helpers'
 import { StravaAPIActivity } from '../../types/Strava'
-import { StravaRunningActivity } from '../../types/Schema'
+import { RunningActivity } from '../../types/Schema'
 import { logErr, logInfo, logSucc } from '../../lib/logging'
 
 enum AuthenticationState {
@@ -51,7 +51,7 @@ export class StravaDataSource {
 
   public getActivities(
     limit: number
-  ): Promise<Array<StravaRunningActivity> | null> {
+  ): Promise<Array<RunningActivity> | null> {
     logInfo('Fetching activities')
     const url = buildActivitiesUrl(this.endpoint, limit)
 
