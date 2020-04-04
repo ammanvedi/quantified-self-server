@@ -29,11 +29,11 @@ export class StravaDataSource {
   private inProgressAuthentication: Promise<void>
 
   constructor(
-    private endpoint: string,
-    private refreshToken: string,
-    private clientId: string,
-    private clientSecret: string,
-    private refreshIntervalMs: number = StravaDataSource.DEFAULT_REFRESH_INTERVAL
+    private readonly endpoint: string,
+    private readonly refreshToken: string,
+    private readonly clientId: string,
+    private readonly clientSecret: string,
+    private readonly refreshIntervalMs: number = StravaDataSource.DEFAULT_REFRESH_INTERVAL
   ) {
     logInfo('Creating strava data service')
     this.tokenState = {

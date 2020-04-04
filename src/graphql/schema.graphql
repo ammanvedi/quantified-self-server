@@ -42,6 +42,7 @@ type RunningActivity {
 
 enum ArtistType {
   MAIN
+  FEATURED
 }
 
 type MusicArtist {
@@ -49,9 +50,16 @@ type MusicArtist {
   type: ArtistType
 }
 
+type MusicCoverUrls {
+  small: String!
+  medium: String!
+  large: String!
+  extraLarge: String!
+}
+
 type MusicAlbum {
   title: String!
-  coverUrl: String!
+  coverUrls: MusicCoverUrls!
 }
 
 type MusicTrack {

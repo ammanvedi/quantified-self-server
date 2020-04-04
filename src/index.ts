@@ -8,15 +8,21 @@ import { ApolloContext } from './types/Apollo'
 import { runsResolver } from './graphql/resolvers/runs'
 import { StravaDataSource } from './data-source/strava/Strava'
 import { logSucc } from './lib/logging'
+import { TidalDataSource } from './data-source/tidal/Tidal'
+import { musicTracksResolver } from './graphql/resolvers/music-tracks'
 
 config()
 
 const envars: ProcessEnvars = {
+  PORT: parseInt(process.env.PORT),
   STRAVA_API_ENDPOINT: process.env.STRAVA_API_ENDPOINT,
   STRAVA_CLIENT_ID: process.env.STRAVA_CLIENT_ID,
   STRAVA_CLIENT_SECRET: process.env.STRAVA_CLIENT_SECRET,
   STRAVA_REFRESH_TOKEN: process.env.STRAVA_REFRESH_TOKEN,
-  PORT: parseInt(process.env.PORT),
+  TIDAL_API_ENDPOINT: process.env.TIDAL_API_ENDPOINT,
+  TIDAL_PASSWORD: process.env.TIDAL_PASSWORD,
+  TIDAL_USERNAME: process.env.TIDAL_USERNAME,
+  TIDAL_WEB_TOKEN: process.env.TIDAL_WEB_TOKEN
 }
 
 const typeDefs = importSchema('graphql/schema.graphql')
@@ -24,6 +30,7 @@ const typeDefs = importSchema('graphql/schema.graphql')
 const resolvers: Resolvers<ApolloContext> = {
   Query: {
     runs: runsResolver,
+    musicTracks: musicTracksResolver
   },
 }
 
@@ -32,6 +39,13 @@ const stravaDataSource = new StravaDataSource(
   envars.STRAVA_REFRESH_TOKEN,
   envars.STRAVA_CLIENT_ID,
   envars.STRAVA_CLIENT_SECRET
+)
+
+const tidalDataSource = new TidalDataSource(
+  envars.TIDAL_API_ENDPOINT,
+  envars.TIDAL_USERNAME,
+  envars.TIDAL_PASSWORD,
+  envars.TIDAL_WEB_TOKEN
 )
 
 const server = new ApolloServer({
@@ -44,6 +58,7 @@ const server = new ApolloServer({
   context: (): ApolloContext => ({
     dataSource: {
       strava: stravaDataSource,
+      tidal: tidalDataSource,
     },
   }),
 })

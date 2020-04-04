@@ -45,3 +45,9 @@ export type TidalFavoriteTracksResponse = {
   totalNumberOfItems: number,
   items: Array<TidalAPITrack>
 }
+
+export type TidalLoginResponse = {
+  userId: number,
+  sessionId: string,
+  countryCode: string,
+}

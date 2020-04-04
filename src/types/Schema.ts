@@ -11,7 +11,8 @@ export type Scalars = {
 };
 
 export enum ArtistType {
-  Main = 'MAIN'
+  Main = 'MAIN',
+  Featured = 'FEATURED'
 }
 
 export type Coordinate = {
@@ -46,13 +47,21 @@ export type LocationDescription = {
 export type MusicAlbum = {
    __typename?: 'MusicAlbum';
   title: Scalars['String'];
-  coverUrl: Scalars['String'];
+  coverUrls: MusicCoverUrls;
 };
 
 export type MusicArtist = {
    __typename?: 'MusicArtist';
   name: Scalars['String'];
   type?: Maybe<ArtistType>;
+};
+
+export type MusicCoverUrls = {
+   __typename?: 'MusicCoverUrls';
+  small: Scalars['String'];
+  medium: Scalars['String'];
+  large: Scalars['String'];
+  extraLarge: Scalars['String'];
 };
 
 export type MusicTrack = {
@@ -181,6 +190,7 @@ export type ResolversTypes = {
   MusicArtist: ResolverTypeWrapper<MusicArtist>,
   ArtistType: ArtistType,
   MusicAlbum: ResolverTypeWrapper<MusicAlbum>,
+  MusicCoverUrls: ResolverTypeWrapper<MusicCoverUrls>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -200,6 +210,7 @@ export type ResolversParentTypes = {
   MusicArtist: MusicArtist,
   ArtistType: ArtistType,
   MusicAlbum: MusicAlbum,
+  MusicCoverUrls: MusicCoverUrls,
 };
 
 export type CoordinateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinate'] = ResolversParentTypes['Coordinate']> = {
@@ -233,13 +244,21 @@ export type LocationDescriptionResolvers<ContextType = any, ParentType extends R
 
 export type MusicAlbumResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicAlbum'] = ResolversParentTypes['MusicAlbum']> = {
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  coverUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  coverUrls?: Resolver<ResolversTypes['MusicCoverUrls'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type MusicArtistResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicArtist'] = ResolversParentTypes['MusicArtist']> = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   type?: Resolver<Maybe<ResolversTypes['ArtistType']>, ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
+};
+
+export type MusicCoverUrlsResolvers<ContextType = any, ParentType extends ResolversParentTypes['MusicCoverUrls'] = ResolversParentTypes['MusicCoverUrls']> = {
+  small?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  medium?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  large?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  extraLarge?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -285,6 +304,7 @@ export type Resolvers<ContextType = any> = {
   LocationDescription?: LocationDescriptionResolvers<ContextType>,
   MusicAlbum?: MusicAlbumResolvers<ContextType>,
   MusicArtist?: MusicArtistResolvers<ContextType>,
+  MusicCoverUrls?: MusicCoverUrlsResolvers<ContextType>,
   MusicTrack?: MusicTrackResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
   RunningActivity?: RunningActivityResolvers<ContextType>,
