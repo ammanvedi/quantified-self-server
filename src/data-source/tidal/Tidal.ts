@@ -30,6 +30,10 @@ export class TidalDataSource {
     logInfo('Creating Tidal data service')
 
     this.inProgressAuthentication = this.login()
+
+    setInterval(() => {
+      this.inProgressAuthentication = this.login()
+    }, this.refreshInterval);
   }
 
   public async getFavoriteTracks(limit: number): Promise<Array<MusicTrack>> {
