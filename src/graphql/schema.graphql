@@ -9,8 +9,8 @@ type SpeedDescription {
 }
 
 type LocationDescription {
-  startPosition: Coordinate!
-  endPosition: Coordinate!
+  startPosition: Coordinate
+  endPosition: Coordinate
   city: String
   state: String
   country: String
@@ -23,9 +23,9 @@ type HeartrateDescription {
 }
 
 type ElevationDescription {
-  elevationGain: Float!
-  minElevation: Float!
-  maxElevation: Float!
+  elevationGain: Float
+  minElevation: Float
+  maxElevation: Float
 }
 
 type RunningActivity {
@@ -72,7 +72,17 @@ type MusicTrack {
   album: MusicAlbum!
 }
 
+type BlogPost {
+  title: String!
+  url: String!
+  categories: [String!]
+  publishedDate: String!
+  contentPreview: String!
+  contentHTML: String!
+}
+
 type Query {
   runs(limit: Int!): [RunningActivity!]
   musicTracks(limit: Int!): [MusicTrack!]
+  posts(limit: Int!): [BlogPost!]
 }

@@ -24,14 +24,18 @@ export const stravaAPIToGQLType = (
     maxElevation: apiType.elev_high,
   },
   location: {
-    startPosition: {
-      lat: apiType.start_latlng[0],
-      lng: apiType.start_latlng[1],
-    },
-    endPosition: {
-      lat: apiType.end_latlng[0],
-      lng: apiType.end_latlng[1],
-    },
+    ...(apiType.start_latlng ? {
+      startPosition: {
+        lat: apiType.start_latlng[0],
+        lng: apiType.start_latlng[1],
+      },
+    } : {}),
+    ...(apiType.end_latlng ? {
+      endPosition: {
+        lat: apiType.end_latlng[0],
+        lng: apiType.end_latlng[1],
+      },
+    } : {}),
     city: apiType.location_city,
     state: apiType.location_state,
     country: apiType.location_country,

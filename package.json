@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "docker-run": "docker run -p 3090:3090 -d ammanvedi/quantified-self-api",
+    "docker-build": "npm run build && docker build -t ammanvedi/quantified-self-api .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc && npm run post-build",
     "post-build": "cp src/graphql/schema.graphql dist/graphql && cp .env dist",
@@ -19,8 +21,8 @@
     "@types/dotenv": "^8.2.0",
     "@types/node-cron": "^2.0.3",
     "@types/node-fetch": "^2.5.5",
-    "graphql-codegen": "^0.4.0",
-    "dotenv": "^8.2.0"
+    "dotenv": "^8.2.0",
+    "graphql-codegen": "^0.4.0"
   },
   "dependencies": {
     "apollo": "^2.26.0",
@@ -28,7 +30,9 @@
     "apollo-server-plugin-response-cache": "^0.4.0",
     "graphql": "^14.6.0",
     "graphql-import": "^1.0.1",
-    "node-fetch": "^2.6.0"
+    "node-fetch": "^2.6.0",
+    "rss-parser": "^3.7.6",
+    "sanitize-html": "^1.22.1"
   },
   "keywords": [],
   "author": "",

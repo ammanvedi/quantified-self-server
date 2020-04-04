@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Docker Prod Build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    tags:
+      - '*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  Push_To_Docker_Hub:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+      - name: Create Dotenv
+        run: |
+          printf "%s" "$DOTENV_PROD" > $GITHUB_WORKSPACE/.env
+        env:
+          DOTENV_PROD: ${{secrets.DOTENV_PROD}}
+      - run: |
+          npm install
+          npm run docker-build
+      - uses: manusa/actions-publish-docker@master
+        with:
+          name: ammanvedi/selfequalsthis
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag script: |
+            return 'authenticator_' + context.ref
+              .replace('refs/heads/', '')
+              .replace('refs/tags/', '')
+              .replace('refs/pull/', '')
+              .replace(/\//g, '_')
+              .replace(/#/g, '');
+          registry: docker.io

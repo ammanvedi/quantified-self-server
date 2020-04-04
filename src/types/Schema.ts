@@ -15,6 +15,16 @@ export enum ArtistType {
   Featured = 'FEATURED'
 }
 
+export type BlogPost = {
+   __typename?: 'BlogPost';
+  title: Scalars['String'];
+  url: Scalars['String'];
+  categories?: Maybe<Array<Scalars['String']>>;
+  publishedDate: Scalars['String'];
+  contentPreview: Scalars['String'];
+  contentHTML: Scalars['String'];
+};
+
 export type Coordinate = {
    __typename?: 'Coordinate';
   lat: Scalars['Float'];
@@ -23,9 +33,9 @@ export type Coordinate = {
 
 export type ElevationDescription = {
    __typename?: 'ElevationDescription';
-  elevationGain: Scalars['Float'];
-  minElevation: Scalars['Float'];
-  maxElevation: Scalars['Float'];
+  elevationGain?: Maybe<Scalars['Float']>;
+  minElevation?: Maybe<Scalars['Float']>;
+  maxElevation?: Maybe<Scalars['Float']>;
 };
 
 export type HeartrateDescription = {
@@ -36,8 +46,8 @@ export type HeartrateDescription = {
 
 export type LocationDescription = {
    __typename?: 'LocationDescription';
-  startPosition: Coordinate;
-  endPosition: Coordinate;
+  startPosition?: Maybe<Coordinate>;
+  endPosition?: Maybe<Coordinate>;
   city?: Maybe<Scalars['String']>;
   state?: Maybe<Scalars['String']>;
   country?: Maybe<Scalars['String']>;
@@ -79,6 +89,7 @@ export type Query = {
    __typename?: 'Query';
   runs?: Maybe<Array<RunningActivity>>;
   musicTracks?: Maybe<Array<MusicTrack>>;
+  posts?: Maybe<Array<BlogPost>>;
 };
 
 
@@ -88,6 +99,11 @@ export type QueryRunsArgs = {
 
 
 export type QueryMusicTracksArgs = {
+  limit: Scalars['Int'];
+};
+
+
+export type QueryPostsArgs = {
   limit: Scalars['Int'];
 };
 
@@ -191,6 +207,7 @@ export type ResolversTypes = {
   ArtistType: ArtistType,
   MusicAlbum: ResolverTypeWrapper<MusicAlbum>,
   MusicCoverUrls: ResolverTypeWrapper<MusicCoverUrls>,
+  BlogPost: ResolverTypeWrapper<BlogPost>,
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -211,6 +228,17 @@ export type ResolversParentTypes = {
   ArtistType: ArtistType,
   MusicAlbum: MusicAlbum,
   MusicCoverUrls: MusicCoverUrls,
+  BlogPost: BlogPost,
+};
+
+export type BlogPostResolvers<ContextType = any, ParentType extends ResolversParentTypes['BlogPost'] = ResolversParentTypes['BlogPost']> = {
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  url?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  categories?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>,
+  publishedDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  contentPreview?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  contentHTML?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
+  __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
 export type CoordinateResolvers<ContextType = any, ParentType extends ResolversParentTypes['Coordinate'] = ResolversParentTypes['Coordinate']> = {
@@ -220,9 +248,9 @@ export type CoordinateResolvers<ContextType = any, ParentType extends ResolversP
 };
 
 export type ElevationDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['ElevationDescription'] = ResolversParentTypes['ElevationDescription']> = {
-  elevationGain?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
-  minElevation?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
-  maxElevation?: Resolver<ResolversTypes['Float'], ParentType, ContextType>,
+  elevationGain?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  minElevation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
+  maxElevation?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>,
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
@@ -233,8 +261,8 @@ export type HeartrateDescriptionResolvers<ContextType = any, ParentType extends 
 };
 
 export type LocationDescriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['LocationDescription'] = ResolversParentTypes['LocationDescription']> = {
-  startPosition?: Resolver<ResolversTypes['Coordinate'], ParentType, ContextType>,
-  endPosition?: Resolver<ResolversTypes['Coordinate'], ParentType, ContextType>,
+  startPosition?: Resolver<Maybe<ResolversTypes['Coordinate']>, ParentType, ContextType>,
+  endPosition?: Resolver<Maybe<ResolversTypes['Coordinate']>, ParentType, ContextType>,
   city?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   state?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
   country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>,
@@ -276,6 +304,7 @@ export type MusicTrackResolvers<ContextType = any, ParentType extends ResolversP
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   runs?: Resolver<Maybe<Array<ResolversTypes['RunningActivity']>>, ParentType, ContextType, RequireFields<QueryRunsArgs, 'limit'>>,
   musicTracks?: Resolver<Maybe<Array<ResolversTypes['MusicTrack']>>, ParentType, ContextType, RequireFields<QueryMusicTracksArgs, 'limit'>>,
+  posts?: Resolver<Maybe<Array<ResolversTypes['BlogPost']>>, ParentType, ContextType, RequireFields<QueryPostsArgs, 'limit'>>,
 };
 
 export type RunningActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['RunningActivity'] = ResolversParentTypes['RunningActivity']> = {
@@ -298,6 +327,7 @@ export type SpeedDescriptionResolvers<ContextType = any, ParentType extends Reso
 };
 
 export type Resolvers<ContextType = any> = {
+  BlogPost?: BlogPostResolvers<ContextType>,
   Coordinate?: CoordinateResolvers<ContextType>,
   ElevationDescription?: ElevationDescriptionResolvers<ContextType>,
   HeartrateDescription?: HeartrateDescriptionResolvers<ContextType>,

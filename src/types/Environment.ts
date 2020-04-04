@@ -8,4 +8,5 @@ export type ProcessEnvars = {
   TIDAL_USERNAME: string,
   TIDAL_PASSWORD: string,
   TIDAL_WEB_TOKEN: string,
+  MEDIUM_RSS_ENDPOINT: string,
 }
