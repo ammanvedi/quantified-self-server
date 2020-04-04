@@ -34,7 +34,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tag script: |
-            return 'authenticator_' + context.ref
+            return 'qsapi_' + context.ref
               .replace('refs/heads/', '')
               .replace('refs/tags/', '')
               .replace('refs/pull/', '')
